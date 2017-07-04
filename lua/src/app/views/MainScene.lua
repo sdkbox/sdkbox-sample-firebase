@@ -18,21 +18,32 @@ function MainScene:onCreate()
 end
 
 function MainScene:setupTestMenu()
-    -- sdkbox.PluginFirebase:init()
-
-    -- base setting
-
+    sdkbox.firebase.Analytics:init()
 
     local item1 = cc.MenuItemLabel:create(
-        cc.Label:createWithSystemFont("Load Interstitial (ad2)", "sans", 28))
+        cc.Label:createWithSystemFont("Log Event", "sans", 28))
     item1:onClicked(function()
-        print("Load Interstitial (ad2)")
+        local evt = {
+            [sdkbox.firebase.Analytics.Param.kFIRParameterItemID] = 'id123456',
+            [sdkbox.firebase.Analytics.Param.kFIRParameterItemName] = 'name123456',
+            [sdkbox.firebase.Analytics.Param.kFIRParameterItemCategory] = 'category123456',
+            [sdkbox.firebase.Analytics.Param.kFIRParameterPrice] = '123.4'
+            }
+        sdkbox.firebase.Analytics:logEvent(sdkbox.firebase.Analytics.Event.kFIREventViewItem, evt)
+        print("Log Event")
     end)
 
     local item2 = cc.MenuItemLabel:create(
-        cc.Label:createWithSystemFont("Show Interstitial (ad2)", "sans", 28))
+        cc.Label:createWithSystemFont("Log Custom Event", "sans", 28))
     item2:onClicked(function()
-        print("Show Interstitial (ad2)")
+        local evt = {
+            [sdkbox.firebase.Analytics.Param.kFIRParameterItemID] = 'id123456',
+            [sdkbox.firebase.Analytics.Param.kFIRParameterItemName] = 'name123456',
+            [sdkbox.firebase.Analytics.Param.kFIRParameterItemCategory] = 'category123456',
+            customKey = 'custom value'
+            }
+        sdkbox.firebase.Analytics:logEvent("customEvent", evt)
+        print("Log Custom Event")
     end)
 
     local menu = cc.Menu:create(item1, item2)
