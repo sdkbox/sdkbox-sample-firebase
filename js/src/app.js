@@ -30,14 +30,26 @@ var HelloWorldLayer = cc.Layer.extend({
     },
 
     createTestMenu: function() {
-        // sdkbox.PluginFirebase.init();
+        sdkbox.firebase.Analytics.init();
 
-        var item1 = new cc.MenuItemLabel(new cc.LabelTTF("Load Interstitial (ad2)", "sans", 28), function() {
-            cc.log("Load Interstitial (ad2)");
+        var item1 = new cc.MenuItemLabel(new cc.LabelTTF("Log Event", "sans", 28), function() {
+            const evt = {}
+            evt[sdkbox.firebase.Analytics.Param.kFIRParameterItemID] = 'id123456';
+            evt[sdkbox.firebase.Analytics.Param.kFIRParameterItemName] = 'name123456';
+            evt[sdkbox.firebase.Analytics.Param.kFIRParameterItemCategory] = 'category123456';
+            evt[sdkbox.firebase.Analytics.Param.kFIRParameterPrice] = '123.4';
+            sdkbox.firebase.Analytics.logEvent(sdkbox.firebase.Analytics.Event.kFIREventViewItem, evt);
+            cc.log("Log Custom Event");
         });
 
-        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Show Interstitial (ad2)", "sans", 28), function() {
-            cc.log("Show Plugin Firebase interstitial (ad2)");
+        var item2 = new cc.MenuItemLabel(new cc.LabelTTF("Log Custom Event", "sans", 28), function() {
+            const evt = {}
+            evt[sdkbox.firebase.Analytics.Param.kFIRParameterItemID] = 'id123456';
+            evt[sdkbox.firebase.Analytics.Param.kFIRParameterItemName] = 'name123456';
+            evt[sdkbox.firebase.Analytics.Param.kFIRParameterItemCategory] = 'category123456';
+            evt['customKey'] = 'custom value';
+            sdkbox.firebase.Analytics.logEvent("customEvent", evt);
+            cc.log("log custom event");
         });
 
         var winsize = cc.winSize;

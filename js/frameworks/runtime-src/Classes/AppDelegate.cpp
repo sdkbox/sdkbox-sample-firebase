@@ -11,6 +11,10 @@
 #else
 #include "js_module_register.h"
 #endif
+#ifdef SDKBOX_ENABLED
+#include "PluginFirebaseJS.hpp"
+#include "PluginFirebaseJSHelper.h"
+#endif
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -69,6 +73,10 @@ bool AppDelegate::applicationDidFinishLaunching()
 #else
     js_module_register();
     ScriptingCore* sc = ScriptingCore::getInstance();
+#ifdef SDKBOX_ENABLED
+    sc->addRegisterCallback(register_all_PluginFirebaseJS);
+    sc->addRegisterCallback(register_all_PluginFirebaseJS_helper);
+#endif
     sc->start();
     sc->runScript("script/jsb_boot.js");
 #if defined(COCOS2D_DEBUG) && (COCOS2D_DEBUG > 0)
