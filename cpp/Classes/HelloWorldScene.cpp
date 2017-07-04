@@ -4,6 +4,9 @@ USING_NS_CC;
 
 #include <vector>
 #include <string>
+
+#include "PluginFirebase/PluginFirebase.h"
+
 using namespace std;
 
 /******************
@@ -94,8 +97,25 @@ void HelloWorld::createTestMenu() {
 
     auto menu = Menu::create();
 
-    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Load Interstitial (ad2)", "arial", 24), [](Ref*){
-        showMsg("Load Interstitial (ad2)");
+    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Log Event", "arial", 24), [](Ref*){
+        showMsg("Log Event");
+        std::map<std::string, std::string> params;
+        params[sdkbox::Firebase::Analytics::kFIRParameterItemID] = "id123456";
+        params[sdkbox::Firebase::Analytics::kFIRParameterItemName] = "name123456";
+        params[sdkbox::Firebase::Analytics::kFIRParameterItemCategory] = "category123456";
+        params[sdkbox::Firebase::Analytics::kFIRParameterPrice] = "123.4";
+        
+        sdkbox::Firebase::Analytics::logEvent(sdkbox::Firebase::Analytics::kFIREventViewItem, params);
+    }));
+    
+    menu->addChild(MenuItemLabel::create(Label::createWithSystemFont("Log Custom Event", "arial", 24), [](Ref*){
+        showMsg("Log Custom Event");
+        std::map<std::string, std::string> params;
+        params[sdkbox::Firebase::Analytics::kFIRParameterItemID] = "id654321";
+        params[sdkbox::Firebase::Analytics::kFIRParameterPrice] = "99.0";
+        params["custom_key"] = "custom_value";
+        
+        sdkbox::Firebase::Analytics::logEvent("custom_event", params);
     }));
 
     menu->alignItemsVerticallyWithPadding(10);
@@ -103,5 +123,9 @@ void HelloWorld::createTestMenu() {
 }
 
 void HelloWorld::testDemograpicFunctions() {
+//    sdkbox::Firebase::Analytics::init();
+    sdkbox::Firebase::Analytics::setUserID("sdkbox_inter_test");
+    sdkbox::Firebase::Analytics::setUserProperty("favorite_food", "hot pot");
+    sdkbox::Firebase::Analytics::setScreenName("login", "");
 }
 
