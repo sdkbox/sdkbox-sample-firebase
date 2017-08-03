@@ -9,7 +9,8 @@ void firebase_set_constants(JSContext* cx, const JS::RootedObject& obj, const st
 void firebase_set_constants(JSContext* cx, JSObject* obj, const std::string& name, const std::map<std::string, std::string>& params)
 #endif
 {
-    jsval val = sdkbox::std_map_string_string_to_jsval(cx, params);
+    JS::RootedValue val(cx);
+    sdkbox::std_map_string_string_to_jsval(cx, params, &val);
 
     JS::RootedValue rv(cx);
     rv = val;
@@ -96,7 +97,7 @@ void register_all_PluginFirebaseJS_helper(JSContext* cx, JS::HandleObject global
     JS::RootedValue firVal(cx);
     JS::RootedObject firObj(cx);
     JS_GetProperty(cx, global, "sdkboxfirebase", &firVal);
-    if (JSVAL_VOID != firVal) {
+    if (JS::NullValue() != firVal) {
         JS::RootedObject sbObj(cx);
         sdkbox::getJsObjOrCreat(cx, global, "sdkbox", &sbObj);
         JS_SET_PROPERTY(cx, sbObj, "firebase", firVal);
@@ -115,7 +116,7 @@ void register_all_PluginFirebaseJS_helper(JSContext* cx, JS::HandleObject global
 void register_all_PluginFirebaseJS_helper(JSContext* cx, JSObject* global) {
     JSObject* firObj;
     JS_GetProperty(cx, global, "sdkboxfirebase", &firObj);
-    if (JSVAL_VOID != firObj) {
+    if (JS::NullValue() != firObj) {
         JSObject* sbObj;
         sdkbox::getJsObjOrCreat(cx, global, "sdkbox", &sbObj);
         JS_SET_PROPERTY(cx, sbObj, "firebase", firVal);
