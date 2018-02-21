@@ -27,7 +27,8 @@ void AppDelegate::initGLContextAttrs()
 
 bool AppDelegate::applicationDidFinishLaunching() {
 #ifdef SDKBOX_ENABLED
-    sdkbox::PluginFirebase::init();
+//    sdkbox::PluginFirebase::init();
+    sdkbox::Firebase::Analytics::init();
 #endif
     // initialize director
     auto director = Director::getInstance();
